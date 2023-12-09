@@ -1,44 +1,69 @@
 import pygame
 from pygame.locals import *
+class Game:
+    def __init__(self):
+        pygame.init()
+        self.surface = pygame.display.set_mode((1000, 500))
+        self.snake = Snake(self.surface)
+        self.snake.draw()
+    def run(self):
 
-def draw_block():
-    surface.fill((50, 168, 82))
-    surface.blit(block,(block_x, block_y))
+        running = True
 
-    pygame.display.flip()
+        while running:
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        running = False
 
+                    if event.key == K_UP:
+                        self.snake.move_up()
+
+                    if event.key == K_DOWN:
+                        self.snake.move_down()
+
+                    if event.key == K_LEFT:
+                        self.snake.move_Left()
+
+                    if event.key == K_RIGHT:
+                        self.snake.move_right()
+
+
+                elif event.type == QUIT:
+                    running = False
+
+
+class Snake:
+    def __init__(self, parent_screen):
+
+        self.parent_screen = parent_screen
+        self.block = pygame.image.load('resource/block.jpg').convert()
+        self.x = 100
+        self.y = 100
+    def draw(self):
+        self.parent_screen.fill((50, 168, 82))
+        self.parent_screen.blit(self.block, (self.x, self.y))
+
+        pygame.display.flip()
+
+    def move_up(self):
+        self.y -= 10
+        self.draw()
+    def move_down(self):
+        self.y += 10
+        self.draw()
+
+    def move_Left(self):
+        self.x -= 10
+        self.draw()
+
+    def move_right(self):
+        self.x += 10
+        self.draw()
 
 if __name__ == '__main__':
-    pygame.init()
 
-    surface = pygame.display.set_mode((1000, 500))
-    surface.fill((50, 168, 82))
-    block = pygame.image.load('resource/block.jpg').convert()
-    block_x = 100
-    block_y = 100
-    surface.blit(block,(block_x, block_y))
-    pygame.display.flip()
-
-    running = True
-
-    while running:
-        for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                pass
-                if event.key == K_UP:
-                    block_y = block_y - 10
-                    draw_block()
-                if event.key == K_DOWN:
-                    block_y = block_y + 10
-                    draw_block()
-                if event.key == K_LEFT:
-                    block_x = block_x - 10
-                    draw_block()
-                if event.key == K_RIGHT:
-                    block_x = block_x + 10
-                    draw_block()
-
-            elif event.type == QUIT:
-                running = False
+    game = Game()
+    game.run()
 
 
